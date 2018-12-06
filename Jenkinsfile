@@ -1,6 +1,6 @@
 // Pod Template
 def cloud = env.CLOUD ?: "kubernetes"
-def registryCredsID = env.REGISTRY_CREDENTIALS ?: "registry-credentials-id"
+def registryCredsID = env.REGISTRY_CREDENTIALS ?: "registry-credentials"
 def serviceAccount = env.SERVICE_ACCOUNT ?: "default"
 
 // Pod Environment Variables

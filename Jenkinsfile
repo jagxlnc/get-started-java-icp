@@ -4,7 +4,7 @@ def registryCredsID = env.REGISTRY_CREDENTIALS ?: "registry-credentials-id"
 def serviceAccount = env.SERVICE_ACCOUNT ?: "default"
 
 // Pod Environment Variables
-def namespace = env.NAMESPACE ?: "default"
+def namespace = env.NAMESPACE ?: "app-mod-workshop"
 def registry = env.REGISTRY ?: "mycluster.icp:8500"
 
 podTemplate(label: 'mypod', cloud: cloud, serviceAccount: serviceAccount, namespace: namespace, envVars: [

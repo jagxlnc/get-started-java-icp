@@ -10,7 +10,7 @@ web:
   replicaCount: 1
   image:
     repository: djccarew/liberty-starter
-    tag: 0.93
+    tag: "1.0"
     pullPolicy: Always
   service:
     type: ClusterIP
@@ -26,5 +26,5 @@ apache-derby:
     internalPort: 1527
   image:
     repository: djccarew/derby-starter
-    tag: 0.9
+    tag: "0.9"
     pullPolicy: IfNotPresent

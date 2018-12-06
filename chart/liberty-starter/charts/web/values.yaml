@@ -1,11 +1,11 @@
 image:
   repository: djccarew/liberty-starter
-  tag: 0.92
+  tag: "1.0"
   pullPolicy: Always
 
 ingress:
   enabled: true
-  
+
 service:
   type: ClusterIP
   internalPort: 9080

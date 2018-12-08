@@ -10,7 +10,7 @@
                   httpsPort="-1">
     </httpEndpoint>
 
-    <webApplication name="GetStartedJava" context-root="/liberty-starter-demo-ui" location="GetStartedJava.war"/>
+    <webApplication name="GetStartedJava" context-root="liberty-starter-demo-ui" location="GetStartedJava.war"/>
     <variable name="DERBY_JDBC_DRIVER_PATH" value="/opt/ibm/wlp/usr/shared/resources/derby/"/>
     <dataSource id="wasstarter" jdbcDriverRef="Derby_Network_Server_Using_Derby_Client" jndiName="jdbc/wasstarter">
         <properties.derby.client databaseName="demo" serverName="${env.DERBY_HOST}" portNumber="${env.DERBY_PORT}" user="${env.DERBY_USER}" password="${env.DERBY_PASSWORD}" />

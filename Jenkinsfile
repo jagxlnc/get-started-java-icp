@@ -4,13 +4,15 @@ def serviceAccount = env.SERVICE_ACCOUNT ?: "default"
 
 // Pod Environment Variables workshop
 def namespace = env.NAMESPACE ?: "default"
+def deploymentNS = env.DEPLOYMENT_NS ?: "app-mod-workshop"
 def registry = env.REGISTRY ?: "mycluster.icp:8500"
 def releaseName = env.RELEASE_NAME ?: "liberty-starter"
 def icpUser = env.ICP_USER ?: "admin"
 def icpPassword = env.ICP_PASSWORD ?: "admin"
 
-podTemplate(label: 'mypod', cloud: cloud, serviceAccount: serviceAccount, namespace: namespace, envVars: [
+podTemplate(label: 'mypod', cloud: cloud, serviceAccount: serviceAccount, namespace: namespace, deploymentNS: deploymentNS, envVars: [
         envVar(key: 'NAMESPACE', value: namespace),
+        envVar(key: 'DEPLOYMENT_NS', value: deploymentNS),
         envVar(key: 'REGISTRY', value: registry),
         envVar(key: 'RELEASE_NAME', value: releaseName),
         envVar(key: 'ICP_USER', value: icpUser),

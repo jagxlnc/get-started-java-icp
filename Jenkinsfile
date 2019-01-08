@@ -1,17 +1,20 @@
 // Pod Template
 def cloud = env.CLOUD ?: "kubernetes"
-def registryCredsID = env.REGISTRY_CREDENTIALS ?: "registry-creds"
 def serviceAccount = env.SERVICE_ACCOUNT ?: "default"
 
-// Pod Environment Variablesworkshop
+// Pod Environment Variables workshop
 def namespace = env.NAMESPACE ?: "default"
 def registry = env.REGISTRY ?: "mycluster.icp:8500"
 def releaseName = env.RELEASE_NAME ?: "liberty-starter"
+def icpUser = env.ICP_USER ?: "admin"
+def icpPassword = env.ICP_PASSWORD ?: "admin"
 
 podTemplate(label: 'mypod', cloud: cloud, serviceAccount: serviceAccount, namespace: namespace, envVars: [
         envVar(key: 'NAMESPACE', value: namespace),
         envVar(key: 'REGISTRY', value: registry),
-        envVar(key: 'RELEASE_NAME', value: releaseName)
+        envVar(key: 'RELEASE_NAME', value: releaseName),
+        envVar(key: 'ICP_USER', value: icpUser),
+        envVar(key: 'ICP_PASSWORD', value: icpPassword)
     ],
     volumes: [
         hostPathVolume(hostPath: '/etc/docker/certs.d', mountPath: '/etc/docker/certs.d'),
@@ -41,15 +44,11 @@ podTemplate(label: 'mypod', cloud: cloud, serviceAccount: serviceAccount, namesp
                 """
             }
             stage('Push Docker Image to Registry') {
-                withCredentials([usernamePassword(credentialsId: registryCredsID,
-                                               usernameVariable: 'USERNAME',
-                                               passwordVariable: 'PASSWORD')]) {
-                    sh """
-                    #!/bin/bash
-                    docker login -u ${USERNAME} -p ${PASSWORD} ${env.REGISTRY}
-                    docker push ${env.REGISTRY}/${env.NAMESPACE}/liberty-starter:${env.BUILD_NUMBER}
-                    """
-                }
+                sh """
+                #!/bin/bash
+                docker login -u ${env.ICP_USER} -p ${env.ICP_PASSWORD} ${env.REGISTRY}
+                docker push ${env.REGISTRY}/${env.NAMESPACE}/liberty-starter:${env.BUILD_NUMBER}
+                """
             }
         }
         container('kubectl') {

@@ -11,8 +11,10 @@ COPY docker/liberty/derbyclient.jar /opt/ibm/wlp/usr/shared/resources/derby/
 
 
 #FEATURES: Install any features that are required
+USER root
 RUN apt-get update && apt-get dist-upgrade -y && apt-get install -y \
 && rm -rf /var/lib/apt/lists/*
+USER 1001
 RUN /opt/ibm/wlp/bin/installUtility install  --acceptLicense \
 	jsp-2.3 \
 	servlet-3.1 \

@@ -40,14 +40,14 @@ podTemplate(label: 'mypod', cloud: cloud, serviceAccount: serviceAccount, namesp
             stage('Build Docker Image') {
                 sh """
                 #!/bin/bash
-                docker build -t ${env.REGISTRY}/${env.NAMESPACE}/liberty-starter:${env.BUILD_NUMBER} .
+                docker build -t ${env.REGISTRY}/${env.DEPLOYMENT_NS}/liberty-starter:${env.BUILD_NUMBER} .
                 """
             }
             stage('Push Docker Image to Registry') {
                 sh """
                 #!/bin/bash
                 docker login -u ${env.ICP_USER} -p ${env.ICP_PASSWORD} ${env.REGISTRY}
-                docker push ${env.REGISTRY}/${env.NAMESPACE}/liberty-starter:${env.BUILD_NUMBER}
+                docker push ${env.REGISTRY}/${env.DEPLOYMENT_NS}/liberty-starter:${env.BUILD_NUMBER}
                 """
             }
         }
@@ -55,16 +55,16 @@ podTemplate(label: 'mypod', cloud: cloud, serviceAccount: serviceAccount, namesp
             stage('Deploy new Docker Image') {
                 sh """
                 #!/bin/bash
-                DEPLOYMENT=`kubectl --namespace=${env.NAMESPACE} get deployments -l app=liberty-starter,component=web-app,release=${env.RELEASE_NAME} -o name`
-                kubectl --namespace=${env.NAMESPACE} get \${DEPLOYMENT}
+                DEPLOYMENT=`kubectl --namespace=${env.DEPLOYMENT_NS} get deployments -l app=liberty-starter,component=web-app,release=${env.RELEASE_NAME} -o name`
+                kubectl --namespace=${env.DEPLOYMENT_NS} get \${DEPLOYMENT}
                 if [ \${?} -ne "0" ]; then
                     # No deployment to update
                     echo 'No deployment to update'
                     exit 1
                 fi
                 # Update Deployment
-                kubectl --namespace=${env.NAMESPACE} set image \${DEPLOYMENT} ${env.RELEASE_NAME}-web=${env.REGISTRY}/${env.NAMESPACE}/liberty-starter:${env.BUILD_NUMBER}
-                kubectl --namespace=${env.NAMESPACE} rollout status \${DEPLOYMENT}
+                kubectl --namespace=${env.DEPLOYMENT_NS} set image \${DEPLOYMENT} ${env.RELEASE_NAME}-web=${env.REGISTRY}/${env.DEPLOYMENT_NS}/liberty-starter:${env.BUILD_NUMBER}
+                kubectl --namespace=${env.DEPLOYMENT_NS} rollout status \${DEPLOYMENT}
                 """
             }
         }

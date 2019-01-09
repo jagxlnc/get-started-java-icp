@@ -5,7 +5,7 @@ $('#user_name').keydown(function(e) {
     //POST request to API to create a new visitor entry in the database
     $.ajax({
         method: "POST",
-        url: "/liberty-starter-ui/api/visitors",
+        url: "./api/visitors",
         contentType: "application/json",
         data: JSON.stringify({
           name: name
@@ -31,7 +31,7 @@ $('#user_name').keydown(function(e) {
 
 //Retrieve all the visitors from the database
 function getNames() {
-  $.get("/liberty-starter-ui/api/visitors")
+  $.get("./api/visitors")
     .done(function(data) {
       if (data.length > 0) {
         data.forEach(function(element, index) {

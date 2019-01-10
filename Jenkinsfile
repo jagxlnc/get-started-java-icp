@@ -51,7 +51,7 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, names
                    sh """
                    #!/bin/bash
                    docker login -u ${USERNAME} -p ${PASSWORD} ${env.REGISTRY}
-                   docker push ${env.REGISTRY}/${env.DEPLOYMENT_NS}/liberty-starter:${env.BUILD_NUMBER}
+                   docker push ${env.REGISTRY}/${env.DEPLOYMENT_NS}/liberty-starter-web:${env.BUILD_NUMBER}
                    """
                }
             }
@@ -68,7 +68,7 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, names
                     exit 1
                 fi
                 # Update Deployment
-                kubectl --namespace=${env.DEPLOYMENT_NS} set image \${DEPLOYMENT} liberty-starter-web=${env.REGISTRY}/${env.DEPLOYMENT_NS}/liberty-starter:${env.BUILD_NUMBER}
+                kubectl --namespace=${env.DEPLOYMENT_NS} set image \${DEPLOYMENT} liberty-starter-web=${env.REGISTRY}/${env.DEPLOYMENT_NS}/liberty-starter-web:${env.BUILD_NUMBER}
                 kubectl --namespace=${env.DEPLOYMENT_NS} rollout status \${DEPLOYMENT}
                 """
             }

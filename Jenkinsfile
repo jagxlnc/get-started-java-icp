@@ -9,8 +9,7 @@ def namespace = env.NAMESPACE ?: "default"
 def deploymentNS = env.DEPLOYMENT_NS ?: "app-mod-workshop"
 def registry = env.REGISTRY ?: "mycluster.icp:8500"
 def releaseName = env.RELEASE_NAME ?: "liberty-starter"
-def icpUser = env.ICP_USER ?: "admin"
-def icpPassword = env.ICP_PASSWORD ?: "admin"
+
 
 podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, namespace: namespace, deploymentNS: deploymentNS, envVars: [
         envVar(key: 'NAMESPACE', value: namespace),
@@ -53,7 +52,8 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, names
                    #!/bin/bash
                    docker login -u ${USERNAME} -p ${PASSWORD} ${env.REGISTRY}
                    docker push ${env.REGISTRY}/${env.DEPLOYMENT_NS}/liberty-starter:${env.BUILD_NUMBER}
-                """
+                   """
+               }
             }
         }
         container('kubectl') {

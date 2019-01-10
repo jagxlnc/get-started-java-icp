@@ -3,7 +3,7 @@ entries:
   liberty-starter:
   - apiVersion: v1
     appVersion: 1.0.0
-    created: 2019-01-10T12:01:56.903209-06:00
+    created: 2019-01-10T12:44:26.425453-06:00
     description: A Helm chart for Kubernetes for a simple WAS Liberty app that uses
       a Derby database
     digest: 038087815cc060684f41409b79d58ae0b8d0206ef56f6bd1d562ce0008c2358a
@@ -12,6 +12,6 @@ entries:
       name: David Carew
     name: liberty-starter
     urls:
-    - http://djccarew.github.io/get-started-java-icp/docs/charts/liberty-starter-1.0.0.tgz
+    - http://djccarew.github.io/get-started-java-icp/charts/liberty-starter-1.0.0.tgz
     version: 1.0.0
-generated: 2019-01-10T12:01:56.898509-06:00
+generated: 2019-01-10T12:44:26.420505-06:00

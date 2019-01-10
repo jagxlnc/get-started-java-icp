@@ -41,7 +41,7 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, names
             stage('Build Docker Image') {
                 sh """
                 #!/bin/bash
-                docker build -t ${env.REGISTRY}/${env.DEPLOYMENT_NS}/liberty-starter:${env.BUILD_NUMBER} .
+                docker build -t ${env.REGISTRY}/${env.DEPLOYMENT_NS}/liberty-starter-web:${env.BUILD_NUMBER} .
                 """
             }
             stage('Push Docker Image to Registry') {

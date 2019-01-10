@@ -61,14 +61,14 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, names
                 sh """
                 #!/bin/bash
                 DEPLOYMENT=`kubectl --namespace=${env.DEPLOYMENT_NS} get deployments -l app=liberty-starter,component=web-app,release=${env.RELEASE_NAME} --no-headers  -o name`
-                IMAGE=`kubectl --namespace=${env.DEPLOYMENT_NS} get \${DEPLOYMENT} --no-headers -o custom-columns=":metadata.name"`
+                kubectl --namespace=${env.DEPLOYMENT_NS} get \${DEPLOYMENT} --no-headers -o custom-columns=":metadata.name"
                 if [ \${?} -ne "0" ]; then
                     # No deployment to update
                     echo 'No deployment to update'
                     exit 1
                 fi
                 # Update Deployment
-                kubectl --namespace=${env.DEPLOYMENT_NS} set image \${IMAGE} ${env.RELEASE_NAME}-web=${env.REGISTRY}/${env.DEPLOYMENT_NS}/liberty-starter:${env.BUILD_NUMBER}
+                kubectl --namespace=${env.DEPLOYMENT_NS} set image \${DEPLOYMENT} liberty-starter-web=${env.REGISTRY}/${env.DEPLOYMENT_NS}/liberty-starter:${env.BUILD_NUMBER}
                 kubectl --namespace=${env.DEPLOYMENT_NS} rollout status \${DEPLOYMENT}
                 """
             }

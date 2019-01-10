@@ -1,6 +1,8 @@
 // Pod Template
+def podLabel = "liberty-starter-pipeline-agent"
 def cloud = env.CLOUD ?: "kubernetes"
-def serviceAccount = env.SERVICE_ACCOUNT ?: "default"
+def serviceAccount = env.SERVICE_ACCOUNT ?: "jnkns-latest-jenkins"
+def registryCredsID = env.REGISTRY_CREDENTIALS ?: "registry-creds"
 
 // Pod Environment Variables workshop
 def namespace = env.NAMESPACE ?: "default"
@@ -10,13 +12,11 @@ def releaseName = env.RELEASE_NAME ?: "liberty-starter"
 def icpUser = env.ICP_USER ?: "admin"
 def icpPassword = env.ICP_PASSWORD ?: "admin"
 
-podTemplate(label: 'mypod', cloud: cloud, serviceAccount: serviceAccount, namespace: namespace, deploymentNS: deploymentNS, envVars: [
+podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, namespace: namespace, deploymentNS: deploymentNS, envVars: [
         envVar(key: 'NAMESPACE', value: namespace),
         envVar(key: 'DEPLOYMENT_NS', value: deploymentNS),
         envVar(key: 'REGISTRY', value: registry),
-        envVar(key: 'RELEASE_NAME', value: releaseName),
-        envVar(key: 'ICP_USER', value: icpUser),
-        envVar(key: 'ICP_PASSWORD', value: icpPassword)
+        envVar(key: 'RELEASE_NAME', value: releaseName)
     ],
     volumes: [
         hostPathVolume(hostPath: '/etc/docker/certs.d', mountPath: '/etc/docker/certs.d'),
@@ -28,7 +28,7 @@ podTemplate(label: 'mypod', cloud: cloud, serviceAccount: serviceAccount, namesp
         containerTemplate(name: 'docker' , image: 'docker:17.06.1-ce', ttyEnabled: true, command: 'cat')
   ]) {
 
-    node('mypod') {
+    node(podLabel) {
         checkout scm
         container('maven') {
             stage('Build application war file') {
@@ -46,10 +46,13 @@ podTemplate(label: 'mypod', cloud: cloud, serviceAccount: serviceAccount, namesp
                 """
             }
             stage('Push Docker Image to Registry') {
-                sh """
-                #!/bin/bash
-                docker login -u ${env.ICP_USER} -p ${env.ICP_PASSWORD} ${env.REGISTRY}
-                docker push ${env.REGISTRY}/${env.DEPLOYMENT_NS}/liberty-starter:${env.BUILD_NUMBER}
+               withCredentials([usernamePassword(credentialsId: registryCredsID,
+                                               usernameVariable: 'USERNAME',
+                                               passwordVariable: 'PASSWORD')]) {
+                   sh """
+                   #!/bin/bash
+                   docker login -u ${USERNAME} -p ${PASSWORD} ${env.REGISTRY}
+                   docker push ${env.REGISTRY}/${env.DEPLOYMENT_NS}/liberty-starter:${env.BUILD_NUMBER}
                 """
             }
         }

@@ -2,13 +2,13 @@
 def podLabel = "liberty-starter-pipeline-agent"
 def cloud = env.CLOUD ?: "kubernetes"
 def serviceAccount = env.SERVICE_ACCOUNT ?: "jnkns-latest-jenkins"
-def registryCredsID = env.REGISTRY_CREDENTIALS ?: "registry-creds"
+def registryCredsID = env.REGISTRY_CREDENTIALS ?: "registry-credentials"
 
 // Pod Environment Variables workshop
 def namespace = env.NAMESPACE ?: "default"
-def deploymentNS = env.DEPLOYMENT_NS ?: "app-mod-workshop"
+def deploymentNS = env.DEPLOYMENT_NS ?: "changeme"
 def registry = env.REGISTRY ?: "mycluster.icp:8500"
-def releaseName = env.RELEASE_NAME ?: "liberty-starter"
+def releaseName = env.RELEASE_NAME ?: "changeme"
 
 
 podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, namespace: namespace, deploymentNS: deploymentNS, envVars: [

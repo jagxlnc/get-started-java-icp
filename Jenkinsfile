@@ -68,7 +68,7 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, names
                     exit 1
                 fi
                 # Update Deployment
-                kubectl --namespace=${env.DEPLOYMENT_NS} set image \${DEPLOYMENT} liberty-starter-web=${env.REGISTRY}/${env.DEPLOYMENT_NS}/liberty-starter-web:${env.BUILD_NUMBER}
+                kubectl --namespace=${env.DEPLOYMENT_NS} set image \${DEPLOYMENT} ${env.RELEASE_NAME}-web=${env.REGISTRY}/${env.DEPLOYMENT_NS}/liberty-starter-web:${env.BUILD_NUMBER}
                 kubectl --namespace=${env.DEPLOYMENT_NS} rollout status \${DEPLOYMENT}
                 """
             }

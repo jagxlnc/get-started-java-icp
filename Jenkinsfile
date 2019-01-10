@@ -60,7 +60,7 @@ podTemplate(label: podLabel, cloud: cloud, serviceAccount: serviceAccount, names
             stage('Deploy new Docker Image') {
                 sh """
                 #!/bin/bash
-                DEPLOYMENT=`kubectl --namespace=${env.DEPLOYMENT_NS} get deployments -l app=liberty-starter,component=web-app,release=${env.RELEASE_NAME} --no-headers  -o custom-columns=":metadata.name" -l`
+                DEPLOYMENT=`kubectl --namespace=${env.DEPLOYMENT_NS} get deployments -l app=liberty-starter,component=web-app,release=${env.RELEASE_NAME} --no-headers  -o custom-columns=":metadata.name"`
                 kubectl --namespace=${env.DEPLOYMENT_NS} get \${DEPLOYMENT}
                 if [ \${?} -ne "0" ]; then
                     # No deployment to update

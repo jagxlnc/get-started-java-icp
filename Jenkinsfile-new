@@ -46,7 +46,7 @@ podTemplate(label: 'mypod', cloud: cloud, serviceAccount: serviceAccount, namesp
                                                passwordVariable: 'PASSWORD')]) {
                     sh """
                     #!/bin/bash
-                    docker login -u ${USERNAME} -p ${PASSWORD} ${env.REGISTRY}
+                    echo ${PASSWORD} | docker login -u ${USERNAME} ${env.REGISTRY} --password-stdin
                     docker push ${env.REGISTRY}/${env.NAMESPACE}/liberty-starter:${env.BUILD_NUMBER}
                     """
                 }
